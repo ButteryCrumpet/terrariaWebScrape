@@ -4,7 +4,12 @@ import tws, csvwrite
 import specificParsers as specP
 import identifiers as ids
 
-BASE_URLS = ['https://terraria.gamepedia.com/List_of_items/a-d']
+BASE_URLS = ['https://terraria.gamepedia.com/List_of_items/a-d',
+             'https://terraria.gamepedia.com/List_of_items/e-h',
+             'https://terraria.gamepedia.com/List_of_items/i-l',
+             'https://terraria.gamepedia.com/List_of_items/m-p',
+             'https://terraria.gamepedia.com/List_of_items/q-t',
+             'https://terraria.gamepedia.com/List_of_items/u-z']
 ALL_URLS = []
 TITLES = []
 DATA = []
@@ -30,15 +35,16 @@ for url in ALL_URLS:
         for row in data:
             DATA.append(row)
         TITLES.append(title)
-        print(count)
         count += 1
-    
-    #tables = ids.identify_multicraftbox(soup)
-    #if tables and title not in TITLES:
-      #  data = specP.get_multicraft_table_data(tables)
-      #  csvwrite.write_rows_to_csv(data, title)
-       # count +=1
+
+    tables = ids.identify_multicraftbox(soup)
+    if tables and title not in TITLES:
+        data = specP.get_multicraft_table_data(tables)
+        csvwrite.write_rows_to_csv(data, title)
+        count += 1
+
+    print(count)
 
 
 
-csvwrite.write_rows_to_csv(DATA, 'test')
+csvwrite.write_rows_to_csv(DATA, 'recipes')
