@@ -35,15 +35,14 @@ for url in ALL_URLS:
         for row in data:
             DATA.append(row)
         TITLES.append(title)
-        count += 1
+        print(title + ' table')
 
     tables = ids.identify_multicraftbox(soup)
     if tables and title not in TITLES:
         data = specP.get_multicraft_table_data(tables)
         csvwrite.write_rows_to_csv(data, title)
-        count += 1
+        print(title + ' multi')
 
-    print(count)
 
 
 

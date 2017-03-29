@@ -11,14 +11,18 @@ def identify_craftbox(soup):
 
 def identify_multicraftbox(soup):
     identifiers = soup.find_all("th", text="Ingredients")
-    #if not len(identifiers):
-        #identifiers = soup.find_all("a", title="Crafting Station")
 
     parent_tables = []
     if len(identifiers):
         for identifier in identifiers:
             parent_table = identifier.find_parent('table')
-            parent_tables.append(parent_table)
+            title = parent_table.find_parent("table").find_previous_sibling("h3")
+            if title != None:
+                title_text = title.get_text()
+                if 'Used in' not in title_text:
+                    parent_tables.append(parent_table)
+            elif title is None:
+                parent_tables.append(parent_table)
         return parent_tables
     else:
         return False

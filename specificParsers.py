@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import tws, bs4
+import tws
 
 def get_craftbox_datas(tables):
     data = []
