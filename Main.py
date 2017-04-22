@@ -42,7 +42,7 @@ URLS = {'Ancient Manipulator': 'Ancient_Manipulator',
         "Tinkerer's Workshop": "Tinkerer's_Workshop",
         'Water': 'Water',
         'Work Bench': 'Work_Bench',
-}
+       }
 
 def Run():
     recipes = []
@@ -57,6 +57,20 @@ def Run():
                 name_check.append(obj.created)
                 recipes.append(obj)
     return recipes
+
+
+def ItemList(recipes):
+    item_list = []
+    items = get_all_items(recipes)
+    count = 0
+    for item in items:
+        image = item_image(item)
+        item_list.append((item, image,))
+        if count % 10 == 0:
+            print(count)
+        count+=1
+
+    return item_list
 
 def recipes_list_to_csv(recipes):
     csv_vals = [recipe.format_csv() for recipe in recipes]
@@ -84,3 +98,21 @@ def grab_data(url):
             cleaned.append(clean)
 
     return cleaned
+
+def get_all_items(recipes):
+    items = []
+    for recipe in recipes:
+        if recipe.created['Item'] not in items:
+            items.append(recipe.created['Item'])
+        for ingredient in recipe.ingredients:
+            if ingredient not in items:
+                items.append(ingredient)
+    return items
+
+def item_image(item_name):
+    url = 'http://terraria.gamepedia.com/File:' + item_name.replace(' ', '_') + '.png'
+    soup = sc.get_soup(url)
+    a = soup.find('a', title=item_name + '.png')
+    if a != None:
+        return a['href']
+    return 'no image'
