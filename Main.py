@@ -8,16 +8,16 @@ import cleaners
 import CSVstuff
 
 URLS = {'Ancient Manipulator': 'Ancient_Manipulator',
-        'Adamantite Forge / Titanium Forge': 'Hardmode_Forges',
+        'Hardmode_Forge': 'Hardmode_Forge',
         'Autohammer': 'Autohammer',
         'Bookcase': 'Autohammer',
         'Bone Welder': 'Bone_Welder',
         'Blend-O-Matic': 'Blend-O-Matic',
         'By Hand': 'By_Hand',
         'Campfire': 'Campfire',
-        'Cooking Pot / Cauldron': 'Cooking_Pot',
+        'Cooking Pot': 'Cooking_Pot',
         'Crystal Ball': 'Crystal_Ball',
-        'Demon Altar / Crimson Altar': 'Altar',
+        'Altar': 'Altar',
         'Dye Vat': 'Dye_Vat',
         'Flesh Cloning Vat': 'Flesh_Cloning_Vat',
         'Furnace': 'Furnace',
@@ -28,20 +28,20 @@ URLS = {'Ancient Manipulator': 'Ancient_Manipulator',
         'Honey Dispenser': 'Honey_Dispenser',
         'Ice Machine': 'Ice_Machine',
         'Imbuing Station': 'Imbuing_Station',
-        'Iron Anvil / Lead Anvil': 'Pre-Hardmode_Anvils',
+        'Pre-Hardmode_Anvil': 'Pre-Hardmode_Anvil',
         'Keg': 'Keg',
         'Lava': 'Lava',
         'Lihzahrd Furnace': 'Lihzahrd_Furnace',
         'Living Loom': 'Living_Loom',
         'Loom': 'Loom',
         'Meat Grinder': 'Meat_Grinder',
-        'Mythril Anvil / Orichalcum Anvil': 'Hardmode_Anvils',
-        'Placed Bottle / Alchemy Station /   Alchemy Table': 'Placed_Bottle',
+        'Hardmode_Anvil': 'Hardmode_Anvil',
+        'Alchemy': 'Placed_Bottle',
         'Sawmill': 'Sawmill',
         'Sky Mill': 'Sky_Mill',
         'Solidifier': 'Solidifier',
         'Steampunk Boiler': 'Steampunk_Boiler',
-        'Table + Chair': 'Table',
+        'Table Chair': 'Table',
         "Tinkerer's Workshop": "Tinkerer's_Workshop",
         'Water': 'Water',
         'Work Bench': 'Work_Bench',
@@ -75,7 +75,7 @@ def get_recipes():
     name_check = []
     for station in URLS:
         actionable_url = 'http://terraria.gamepedia.com/Recipes/' + URLS[station]
-        print('Getting ' + station + ' recipes')
+        print('Getting from ' + actionable_url)
         rows = grab_data(actionable_url)
         for row in rows:
             obj = serializer(row, station)
@@ -102,7 +102,7 @@ def get_item_list(recipes):
 
 def recipes_list_to_csv(recipes):
     csv_vals = [recipe.format_csv() for recipe in recipes]
-    CSVstuff.write_list(csv_vals, filename='cmon')
+    CSVstuff.write_list(csv_vals, filename='recipes')
 
 
 def grab_data(url):
@@ -130,7 +130,7 @@ def grab_data(url):
 def get_all_items(recipes):
     items = []
     for recipe in recipes:
-        if recipe.created['Item'] not in items:
+        if r'^(' + recipe.created['Item'] + ')$' not in items:
             items.append(recipe.created['Item'])
         for ingredient in recipe.ingredients:
             if ingredient not in items:
