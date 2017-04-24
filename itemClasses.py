@@ -16,5 +16,16 @@ class Recipe(object):
             row.append(item + '|' + str(amount))
         return row
 
+    def format_dict(self):
+        dic = {}
+        dic['item'] = self.created['Item'].replace(' ', '_')
+        dic['amount'] = self.created['Amount']
+        dic['station'] = self.crafting_station.replace(' ', '_')
+        dic['ingredients'] = []
+        for item in self.ingredients:
+            ing = {'item': item.replace(' ', '_'), 'amount': self.ingredients[item]}
+            dic['ingredients'].append(ing)
+        return dic
+
     def __repr__(self):
         return self.created['Item']
